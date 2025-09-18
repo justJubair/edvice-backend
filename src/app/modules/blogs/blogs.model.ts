@@ -1,8 +1,6 @@
 import { Schema, model, Document, Types } from "mongoose";
 import { IBlog } from "./blog.interface";
 
-
-
 const BlogSchema = new Schema<IBlog>(
   {
     title: {
@@ -13,6 +11,11 @@ const BlogSchema = new Schema<IBlog>(
     image: {
       type: String,
       required: true,
+    },
+    category: {
+      type: String,
+      enum: ["blog", "news"],
+      default: "blog",
     },
     description: {
       type: String,
