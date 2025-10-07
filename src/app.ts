@@ -10,10 +10,26 @@ import { IGenericResponse } from "./interfaces/common";
 // Initialize Express app
 const app: Application = express();
 
+// CORS Configuration - Fix for CORS errors
+const allowedOrigins = [
+  "https://edvice-frontend.vercel.app",
+  "http://localhost:5173",
+];
+
 // Middleware
 app.use(
   cors({
-    origin: config.frontend_url || "http://localhost:5173",
+    // origin: config.frontend_url || "http://localhost:5173",
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps or Postman)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
